@@ -60,9 +60,9 @@ for branch in branches
   if skip
     next
   end
+  data = `git show #{branch} --pretty="Date: %aD" --no-patch`.split("\n")
   # puts "="+branch+"="
   # puts "git show #{branch}"
-  data = `git show #{branch}`.split("\n")
   date_line = data.select{|d| d.start_with?("Date:")}[0]
   date = DateTime.parse(date_line)
   age = now-date
