@@ -39,6 +39,7 @@ else
   branches = `git branch --remotes`.split("\n")
 end
 
+
 now = DateTime.now
 
 
@@ -48,7 +49,7 @@ for branch in branches
     branch = branch[2..-1]
   end
   skip = false
-  for exclude in ["origin/HEAD", "origin/master"]
+  for exclude in ["origin/HEAD", "origin/master", "origin/arct-release", "origin/release"]
     if branch.start_with?(exclude)
       skip = true
     end
@@ -61,11 +62,9 @@ for branch in branches
     next
   end
   data = `git show #{branch} --pretty="Date: %aD" --no-patch`.split("\n")
-  # puts "="+branch+"="
-  # puts "git show #{branch}"
   date_line = data.select{|d| d.start_with?("Date:")}[0]
   date = DateTime.parse(date_line)
-  age = now-date
+  age = now - date
   if age > options[:age]
     puts "deleteing #{branch}"
     if not options[:dry]
